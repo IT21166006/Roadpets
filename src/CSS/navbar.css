@@ -1,0 +1,18 @@
+.btn-signup {
+    background-color: #ff914d; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px 20px; 
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make it behave like a button */
+    font-size: 1rem; /* Font size */
+}
+
+.nav-link-large {
+    font-size: 1.2rem; /* Adjust the size as needed */
+    padding-left: 15px; 
+    
+    margin-right: 20px; 
+}
