@@ -86,7 +86,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5000'], // Allow requests from multiple frontend URLs
+    origin: ['http://localhost:3000', 'http://localhost:5000','http://localhost:5173'], // Allow requests from multiple frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
