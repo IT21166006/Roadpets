@@ -1,34 +1,27 @@
-import Navbar from "../src/components/Navbar"
-import Gallery from "../src/components/Gallery"
-import Banner from './components/Banner'
-import Signup from './pages/Signup';
-import Signin from './pages/Signin';
-import Protected from './pages/Protected';
-import Profile from './pages/Profile'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // ✅ Ensure proper imports
 
+import Navbar from "./components/Navbar";
+import Gallery from "./components/Gallery";
+import Banner from "./components/Banner";
+
+import Home from "../src/pages/Home"; 
+import Admin from "../src/pages/Admin";
+import Postform from "./components/PostForm"; 
 
 function App() {
   return (
     <Router>
       <Navbar />
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/create" element={<Postform />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/banner" element={<Banner />} />
-
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/protected" element={<Protected />} />
-            <Route path="/profile" element={<Profile />} />
-
-         
-
-            
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/create" element={<Postform />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/banner" element={<Banner />} />
+      </Routes>
     </Router>
-);
+  );
 }
 
-export default App
+export default App;
