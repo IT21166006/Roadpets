@@ -1,0 +1,27 @@
+/* Add this to your slider.css */
+.custom-slider {
+    max-width: 100%; /* Adjust the width as needed */
+    margin: auto; /* Center the slider */
+    padding: 0 10px; /* Add padding for smaller screens */
+}
+
+.carousel-inner img {
+    width: 100%; /* Ensure images take full width of the container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 150px; /* Further adjust height for smaller screens */
+    }
+    
+    .carousel-caption {
+        font-size: 0.8rem; /* Reduce font size for captions */
+    }
+    .carousel-control {
+        display: none; /* Hide controls on smaller screens */
+    }
+    .carousel-indicators {
+        display: none; /* Hide the image slider count bar */
+    }
+}
