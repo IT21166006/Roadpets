@@ -8,6 +8,7 @@ import Banner from "./components/Banner";
 import Home from "../src/pages/Home"; 
 import Admin from "../src/pages/Admin";
 import Postform from "./components/PostForm"; 
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/create" element={<Postform />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/banner" element={<Banner />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
