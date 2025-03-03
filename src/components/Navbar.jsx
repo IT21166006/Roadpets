@@ -1,14 +1,14 @@
 import React from 'react';
-import Logo from "../asserts/logo.png"
-import '../CSS/navbar.css'
+import Logo from "../asserts/logo.png";
+import '../CSS/navbar.css';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = () => {
   return (
-    
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div style={{ paddingLeft: '30px' }}></div>
-      <img src={Logo} width="150" height="50" alt="" ></img>
-      
+      <img src={Logo} width="150" height="50" alt="" />
+
       <button 
         className="navbar-toggler" 
         type="button" 
@@ -44,22 +44,24 @@ const Navbar = () => {
             </a>
           </li>
           
-          <li className="nav-item">
+          <li className="nav-item px-3">
             <a 
-              className="btn-signup" 
+              className="btn-signup me-2" 
               href="/signin"
             >
               Login
             </a>
             
           </li>
+          <li className="nav-item px-3">
+            <a href="/profile"><AccountCircleIcon style={{ color: 'black', fontSize: '50px', cursor: 'pointer' }} /></a>
+            </li>
+          
         </ul>
-        
         
       </div>
       
     </nav>
-    
   );
 };
 
