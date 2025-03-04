@@ -47,7 +47,7 @@ const Navbar = () => {
           <li className="nav-item px-3">
             <a 
               className="btn-signup me-2" 
-              href="/signin"
+              href="/login"
             >
               Login
             </a>
