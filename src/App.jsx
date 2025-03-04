@@ -9,6 +9,9 @@ import Home from "../src/pages/Home";
 import Admin from "../src/pages/Admin";
 import Postform from "./components/PostForm"; 
 import Profile from "./pages/Profile";
+import Signup from "./pages/Signup";
+import Login from "./pages/Signin";
+import Footer from "./components/Footer"
 
 function App() {
   return (
@@ -21,7 +24,10 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/banner" element={<Banner />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
