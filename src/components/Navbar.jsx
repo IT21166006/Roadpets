@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto px-5">
           <li className="nav-item active">
-            <a className="nav-link nav-link-large" href="/">Home <span className="visually-hidden">(current)</span></a>
+            <a className="nav-link nav-link-large" href="/home">Home <span className="visually-hidden">(current)</span></a>
           </li>
           <li className="nav-item">
             <a className="nav-link nav-link-large" href="/create">Create Post</a>
