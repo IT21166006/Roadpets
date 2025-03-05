@@ -1,7 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import Post from '../models/Post.js';
-;
+import { authenticateToken } from '../middleware/auth.js';
+
 const router = express.Router();
 
 // Configure multer for file uploads
@@ -45,48 +46,58 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Update a post
-router.put('/:id', upload.array('images', 4), async (req, res) => { // Added upload middleware for updating posts
-    const { name, phoneNumber, description, location } = req.body;
-
-    // Handle image updates if any
-    const images = req.files ? req.files.map(file => file.path) : undefined;
-
+// Get user's posts
+router.get('/user', authenticateToken, async (req, res) => {
     try {
-        const updatedPost = await Post.findByIdAndUpdate(req.params.id,
-            { name, phoneNumber, description, location, ...(images && { images }) },
+        const posts = await Post.find({ user: req.user.userId })
+            .sort({ createdAt: -1 });
+        res.json(posts);
+    } catch (error) {
+        console.error('Error fetching user posts:', error);
+        res.status(500).json({ error: 'Error fetching posts' });
+    }
+});
+
+// Update post
+router.put('/:id', authenticateToken, async (req, res) => {
+    try {
+        const post = await Post.findOne({ _id: req.params.id, user: req.user.userId });
+        
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found or unauthorized' });
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body },
             { new: true }
         );
 
-        if (!updatedPost) {
-            return res.status(404).json({ message: 'Post not found.' });
-        }
-
-        res.status(200).json(updatedPost);
+        res.json(updatedPost);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error updating post:', error);
+        res.status(500).json({ error: 'Error updating post' });
     }
 });
 
-// Delete a post
-router.delete('/:id', async (req, res) => {
+// Delete post
+router.delete('/:id', authenticateToken, async (req, res) => {
     try {
-        const deletedPost = await Post.findByIdAndDelete(req.params.id);
-
-        if (!deletedPost) {
-            return res.status(404).json({ message: 'Post not found.' });
+        const post = await Post.findOne({ _id: req.params.id, user: req.user.userId });
+        
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found or unauthorized' });
         }
 
-        res.status(204).send();
+        await Post.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Post deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error deleting post:', error);
+        res.status(500).json({ error: 'Error deleting post' });
     }
 });
 
-
-
-
-//Find By Location
+// Find By Location
 
 // Find posts by location
 router.get('/location/:location', async (req, res) => {
@@ -100,19 +111,6 @@ router.get('/location/:location', async (req, res) => {
             return res.status(404).json({ message: 'No posts found for this location.' });
         }
 
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-// Get posts by user
-router.get('/user/:userId', async (req, res) => {
-    try {
-        const posts = await Post.find({ user: req.params.userId }).sort({ createdAt: -1 });
-        if (posts.length === 0) {
-            return res.status(404).json({ message: 'No posts found for this user.' });
-        }
         res.status(200).json(posts);
     } catch (error) {
         res.status(500).json({ message: error.message });
