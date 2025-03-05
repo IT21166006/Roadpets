@@ -8,26 +8,33 @@ import Banner from "./components/Banner";
 import Home from "../src/pages/Home"; 
 import Admin from "../src/pages/Admin";
 import Postform from "./components/PostForm"; 
-import Profile from "./pages/Profile";
-import Signup from "./pages/Signup";
-import Login from "./pages/Signin";
 import Footer from "./components/Footer"
+
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Profile from './components/Profile';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/home" element={<Home />} />
+        {/* <Route path="/admin" element={<Admin />} /> */}
         <Route path="/create" element={<Postform />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/banner" element={<Banner />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signup" element={<Signup />} />
+        
+
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/" element={<Login />} />
+
       </Routes>
-      <Footer />
+      
     </Router>
   );
 }
