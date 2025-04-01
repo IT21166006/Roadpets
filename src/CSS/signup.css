@@ -1,0 +1,22 @@
+/* Custom styles */
+.card {
+    border-radius: 10px;
+}
+
+.card-body h2 {
+    font-weight: bold;
+}
+
+.form-control {
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: #ff914d;
+    box-shadow: 0 0 5px rgba(255, 145, 77, 0.5);
+}
+
+.btn:hover {
+    background-color: #e67a3b;
+    border-color: #e67a3b;
+}
