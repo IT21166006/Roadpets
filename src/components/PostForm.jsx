@@ -184,7 +184,7 @@ const PostForm = () => {
             );
 
             if (response.data) {
-                navigate('/profile');
+                navigate('/');
             }
         } catch (error) {
             console.error('Error creating post:', error);
