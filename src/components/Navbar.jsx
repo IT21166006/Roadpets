@@ -9,60 +9,60 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div style={{ paddingLeft: '30px' }}></div>
-      <img src={Logo} width="150" height="50" alt="" />
+      {/* Logo on the left */}
+      <div className="container-fluid">
+        <div className="navbar-brand">
+          <img src={Logo} width="150" height="50" alt="" />
+        </div>
 
-      <button 
-        className="navbar-toggler" 
-        type="button" 
-        data-bs-toggle="collapse" 
-        data-bs-target="#navbarSupportedContent" 
-        aria-controls="navbarSupportedContent" 
-        aria-expanded="false" 
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
+        {/* Toggler button */}
+        <button 
+          className="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarSupportedContent" 
+          aria-controls="navbarSupportedContent" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-          <li className="nav-item active">
-            <a className="nav-link nav-link-large" href="/">Home <span className="visually-hidden">(current)</span></a>
-          </li>
-          
-          {/* Only show Create Post if user is authenticated */}
-          {isAuthenticated && (
+        {/* Navigation items aligned to the right */}
+        <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul className="navbar-nav mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link nav-link-large" href="/create">Create Post</a>
+              <a className="nav-link nav-link-large" href="/">Home</a>
             </li>
-          )}
-          
-          <li className="nav-item">
-            <a className="nav-link nav-link-large" href="/gallery">Gallery</a>
-          </li>
-          
-          {/* Show Sign Up and Login only if user is not authenticated */}
-          {!isAuthenticated ? (
-            <>
-              <li className="nav-item px-3">
-                <a className="btn-signup" href="/signup">
-                  SignUp 
+            
+            {isAuthenticated && (
+              <li className="nav-item">
+                <a className="nav-link nav-link-large" href="/create">Create Post</a>
+              </li>
+            )}
+            
+            <li className="nav-item">
+              <a className="nav-link nav-link-large" href="/gallery">Gallery</a>
+            </li>
+            
+            {!isAuthenticated ? (
+              <>
+                <li className="nav-item px-2">
+                  <a className="btn-signup" href="/signup">SignUp</a>
+                </li>
+                <li className="nav-item px-2">
+                  <a className="btn-signup" href="/login">Login</a>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item px-2">
+                <a href="/profile">
+                  <AccountCircleIcon style={{ color: 'black', fontSize: '50px', cursor: 'pointer' }} />
                 </a>
               </li>
-              <li className="nav-item px-3">
-                <a className="btn-signup me-2" href="/login">
-                  Login
-                </a>
-              </li>
-            </>
-          ) : (
-            <li className="nav-item px-3">
-              <a href="/profile">
-                <AccountCircleIcon style={{ color: 'black', fontSize: '50px', cursor: 'pointer' }} />
-              </a>
-            </li>
-          )}
-        </ul>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
