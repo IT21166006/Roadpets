@@ -97,49 +97,75 @@ const PostList = () => {
               <div className="card-body">
                 <h5 className="card-title"><PersonIcon/>{post.name}</h5>
                 <br></br>
-               
+                
                 {/* Bootstrap Carousel for Images */}
-                <div id={`carousel-${post._id}`} className="carousel slide" data-bs-ride="carousel">
-  <div className="carousel-inner">
-    {post.images.map((img, index) => (
-      <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-        <div className="image-wrapper">
-          <img
-            src={`http://localhost:5000/${img}`}
-            alt={`Post image ${index}`}
-            className="d-block w-100  rounded"
-            // Removed inline height to use CSS for aspect ratio
-          />
-        </div>
-        <br></br>
-                <p className="card-text"><strong><PhoneIcon/> Phone: </strong> {post.phoneNumber}</p>
-                <p className="card-text"><strong><LocationOnIcon/> Location: </strong>
-                 {post.location}</p>
-                 
-                <p className="card-text"><strong><LightbulbCircleIcon/> Description:</strong> {post.description}</p>
-      </div>
-    ))}
-  </div>
-                  {/* Carousel Controls */}
-                  <button
-                    className="carousel-control-prev"
-                    type="button"
-                    data-bs-target={`#carousel-${post._id}`}
-                    data-bs-slide="prev"
-                  >
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                  </button>
-                  <button
-                    className="carousel-control-next"
-                    type="button"
-                    data-bs-target={`#carousel-${post._id}`}
-                    data-bs-slide="next"
-                  >
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                  </button>
+                <div 
+                  id={`carousel-${post._id}`} 
+                  className="carousel slide" 
+                  data-bs-ride="false"
+                  data-bs-interval="false"
+                >
+                  {post.images.length > 1 && (
+                    <div className="carousel-indicators">
+                      {post.images.map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          data-bs-target={`#carousel-${post._id}`}
+                          data-bs-slide-to={index}
+                          className={index === 0 ? "active" : ""}
+                          aria-label={`Slide ${index + 1}`}
+                        ></button>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="carousel-inner">
+                    {post.images.map((img, index) => (
+                      <div 
+                        key={index} 
+                        className={`carousel-item ${index === 0 ? 'active' : ''}`}
+                      >
+                        <div className="image-wrapper">
+                          <img
+                            src={`http://localhost:5000/${img}`}
+                            alt={`Post image ${index + 1}`}
+                            className="d-block w-100 rounded"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {post.images.length > 1 && (
+                    <>
+                      <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target={`#carousel-${post._id}`}
+                        data-bs-slide="prev"
+                      >
+                        <span className="carousel-control-prev-icon"></span>
+                        <span className="visually-hidden">Previous</span>
+                      </button>
+                      <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target={`#carousel-${post._id}`}
+                        data-bs-slide="next"
+                      >
+                        <span className="carousel-control-next-icon"></span>
+                        <span className="visually-hidden">Next</span>
+                      </button>
+                    </>
+                  )}
                 </div>
+
+                {/* Post Details - Moved outside of carousel */}
+                <br></br>
+                <p className="card-text"><strong><PhoneIcon/> Phone: </strong> {post.phoneNumber}</p>
+                <p className="card-text"><strong><LocationOnIcon/> Location: </strong> {post.location}</p>
+                <p className="card-text"><strong><LightbulbCircleIcon/> Description:</strong> {post.description}</p>
               </div>
             </div>
           </div>
