@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../CSS/signup.css';
 
 function Signup() {
     const [username, setUsername] = useState('');
@@ -24,24 +25,72 @@ function Signup() {
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
-                <div className="col-md-4">
-                    <form onSubmit={handleSubmit}>
-                        <h2>Signup</h2>
-                        <div className="mb-3">
-                            <label className="form-label">Username</label>
-                            <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <div className="col-md-6">
+                    <div className="card shadow" style={{ borderColor: '#ff914d' }}>
+                        <div className="card-body">
+                            <h2 className="text-center mb-4" style={{ color: '#ff914d' }}>Signup</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: '#000' }}>Username</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        style={{
+                                            borderColor: '#ff914d',
+                                            backgroundColor: '#fff',
+                                            color: '#000',
+                                        }}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: '#000' }}>Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        style={{
+                                            borderColor: '#ff914d',
+                                            backgroundColor: '#fff',
+                                            color: '#000',
+                                        }}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: '#000' }}>Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        style={{
+                                            borderColor: '#ff914d',
+                                            backgroundColor: '#fff',
+                                            color: '#000',
+                                        }}
+                                    />
+                                </div>
+                                {error && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
+                                <button
+                                    type="submit"
+                                    className="btn btn-block w-100"
+                                    style={{
+                                        backgroundColor: '#ff914d',
+                                        borderColor: '#ff914d',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    Signup
+                                </button>
+                            </form>
                         </div>
-                        <div className="mb-3">
-                            <label className="form-label">Email</label>
-                            <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Password</label>
-                            <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        </div>
-                        {error && <div className="alert alert-danger">{error}</div>}
-                        <button type="submit" className="btn btn-primary">Signup</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
