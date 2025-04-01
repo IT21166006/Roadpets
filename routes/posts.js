@@ -2,37 +2,62 @@ import express from 'express';
 import multer from 'multer';
 import Post from '../models/Post.js';
 import { authenticateToken } from '../middleware/auth.js';
+import path from 'path';
 
 const router = express.Router();
 
-// Configure multer for file uploads
+// Configure multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage });
 
-// Create a new post with multiple images
-router.post('/', upload.array('images', 4), async (req, res) => {
-    const { name, phoneNumber, location, description } = req.body; // Ensure description is included
+const upload = multer({ storage: storage });
 
-    // Ensure images are uploaded
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ message: 'Please upload at least one image.' });
-    }
-
-    const images = req.files.map(file => file.path);
-
+// Create post route
+router.post('/', authenticateToken, upload.array('images', 5), async (req, res) => {
     try {
-        const newPost = new Post({ name, phoneNumber, location, description, images });
-        await newPost.save();
-        res.status(201).json(newPost);
+        console.log('Request body:', req.body);
+        console.log('Files:', req.files);
+
+        // Validate required fields
+        if (!req.body.name || !req.body.description || !req.body.location) {
+            return res.status(400).json({ 
+                message: 'Missing required fields',
+                received: req.body 
+            });
+        }
+
+        // Process uploaded files
+        const imagePaths = req.files ? req.files.map(file => file.path) : [];
+
+        // Create new post
+        const newPost = new Post({
+            name: req.body.name,
+            description: req.body.description,
+            location: req.body.location,
+            phoneNumber: req.body.phoneNumber,
+            images: imagePaths,
+            user: req.user.userId
+        });
+
+        // Save post
+        const savedPost = await newPost.save();
+        console.log('Saved post:', savedPost);
+
+        res.status(201).json(savedPost);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error creating post:', error);
+        res.status(500).json({ 
+            message: 'Error creating post', 
+            error: error.message,
+            stack: error.stack 
+        });
     }
 });
 
