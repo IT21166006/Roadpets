@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../CSS/signup.css';
+import Logo from "../asserts/logo.png";
 
 function Signup() {
     const [username, setUsername] = useState('');
@@ -28,7 +29,10 @@ function Signup() {
                 <div className="col-md-6">
                     <div className="card shadow" style={{ borderColor: '#ff914d' }}>
                         <div className="card-body">
-                            <h2 className="text-center mb-4" style={{ color: '#ff914d' }}>Signup</h2>
+                        <div className="d-flex justify-content-center">
+                            <img src={Logo} width="200" alt="Logo" />
+                        </div>
+                            <h2 className=" mb-4" style={{ color: '#ff914d' }}>Signup</h2>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label className="form-label" style={{ color: '#000' }}>Username</label>
@@ -88,6 +92,14 @@ function Signup() {
                                 >
                                     Signup
                                 </button>
+                                <br></br>
+                                <br></br>
+                                <div className="d-flex justify-content-center">
+                                <p>If you already have an account, <a href="/login">Login</a></p>
+                                </div>
+                            
+                        
+                                
                             </form>
                         </div>
                     </div>
