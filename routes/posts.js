@@ -26,7 +26,7 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
         console.log('Files:', req.files);
 
         // Validate required fields
-        if (!req.body.name || !req.body.description || !req.body.location) {
+        if (!req.body.name || !req.body.description || !req.body.location || !req.body.phoneNumber) {
             return res.status(400).json({ 
                 message: 'Missing required fields',
                 received: req.body 
