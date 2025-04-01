@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
+import { useNavigate } from 'react-router-dom';
 
-const PostForm = ({ userId }) => {
+const PostForm = () => {
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [location, setLocation] = useState('');
@@ -15,6 +16,39 @@ const PostForm = ({ userId }) => {
     const [countryCode, setCountryCode] = useState('+1'); // Default country code
     const [phoneError, setPhoneError] = useState('');
     const [locationError, setLocationError] = useState(''); // New state for location error
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    // Add useEffect to fetch user profile data when component mounts
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+
+            try {
+                const response = await axios.get('http://localhost:5000/api/protected/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Auto-fill the name field with user's username
+                if (response.data && response.data.username) {
+                    setName(response.data.username);
+                }
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+                if (error.response?.status === 401) {
+                    navigate('/login');
+                }
+            }
+        };
+
+        fetchUserProfile();
+    }, [navigate]);
 
     // Function to fetch location using ipinfo.io
     const fetchLocation = async () => {
@@ -103,59 +137,65 @@ const PostForm = ({ userId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Check if name exceeds 20 characters
-        if (name.length > 20) {
-            alert('Name must be 20 characters or less.');
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            navigate('/login');
             return;
         }
-
-        // Check if phone number exceeds 15 characters
-        if (countryCode.length + phoneNumber.length > 15) {
-            alert('Phone number must be 15 characters or less including country code.');
-            return;
-        }
-
-        // Check if description exceeds 35 characters
-        if (description.length > 35) {
-            alert('Description must be 35 characters or less.');
-            return;
-        }
-
-        if (croppedImages.some((img) => img === null)) {
-            alert('Please crop all images before submitting.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('phoneNumber', `${countryCode}${phoneNumber}`); // Concatenate country code and number
-        formData.append('location', location);
-        formData.append('description', description);
-        formData.append('user', userId); // Add user ID to form data
-        croppedImages.forEach((croppedImage) => {
-            formData.append('images', croppedImage); // Append each cropped image
-        });
 
         try {
-            await axios.post('http://localhost:5000/api/posts', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            alert('Post created successfully!');
-            resetForm();
-        } catch (error) {
-            console.error(error);
-            alert(error.response?.data?.message || 'Failed to create post.');
-        }
-    };
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('location', location);
+            formData.append('phoneNumber', phoneNumber); // Add phone number
 
-    const resetForm = () => {
-        setName('');
-        setPhoneNumber('');
-        setLocation('');
-        setDescription('');
-        setImages([]);
-        setCroppedImages([]);
+            // Handle cropped images if available, otherwise use original images
+            if (croppedImages.length > 0) {
+                croppedImages.forEach((blob, index) => {
+                    if (blob) {
+                        formData.append('images', blob, `image-${index}.jpg`);
+                    }
+                });
+            } else {
+                // Convert base64 images to blobs and append
+                for (let i = 0; i < images.length; i++) {
+                    const base64Response = await fetch(images[i]);
+                    const blob = await base64Response.blob();
+                    formData.append('images', blob, `image-${i}.jpg`);
+                }
+            }
+
+            // Log formData contents for debugging
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+
+            const response = await axios.post(
+                'http://localhost:5000/api/posts',
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+
+            if (response.data) {
+                navigate('/profile');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+            const errorMessage = error.response?.data?.message || 'Failed to create post';
+            setError(errorMessage);
+            
+            // Log detailed error information
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+            }
+        }
     };
 
     return (
@@ -170,38 +210,38 @@ const PostForm = ({ userId }) => {
                                 type="text"
                                 id="name"
                                 className="form-control"
-                                placeholder="Enter your name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
+                                readOnly
                             />
                         </div>
 
                         <div className="mb-3">
                             <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
                             <div className="input-group">
-                                <select
-                                    className="form-select"
-                                    style={{ width: '100px' }}
+                                <select 
+                                    className="form-select" 
+                                    style={{ maxWidth: '100px' }}
                                     value={countryCode}
                                     onChange={(e) => setCountryCode(e.target.value)}
                                 >
-                                    <option value="+1">+1 (USA)</option>
-                                    <option value="+44">+44 (UK)</option>
-                                    <option value="+91">+91 (India)</option>
+                                    <option value="+1">+1</option>
+                                    <option value="+44">+44</option>
                                     {/* Add more country codes as needed */}
                                 </select>
                                 <input
-                                    type="text"
+                                    type="tel"
                                     id="phoneNumber"
                                     className="form-control"
-                                    placeholder="Enter your phone number"
                                     value={phoneNumber}
-                                    onChange={handlePhoneChange}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
                                     required
+                                    pattern="[0-9]{10}"
+                                    placeholder="Enter phone number"
                                 />
                             </div>
-                            {phoneError && <small className="text-danger">{phoneError}</small>}
+                            {phoneError && <div className="text-danger small">{phoneError}</div>}
                         </div>
 
                         <div className="mb-3">
@@ -210,12 +250,11 @@ const PostForm = ({ userId }) => {
                                 type="text"
                                 id="location"
                                 className="form-control"
-                                placeholder="Enter location"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
                                 required
                             />
-                            {locationError && <small className="text-danger">{locationError}</small>}
+                            {locationError && <div className="text-danger small">{locationError}</div>}
                         </div>
 
                         <div className="mb-3">
@@ -223,15 +262,15 @@ const PostForm = ({ userId }) => {
                             <textarea
                                 id="description"
                                 className="form-control"
-                                placeholder="Enter a brief description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
+                                rows="4"
                             />
                         </div>
 
                         <div className="mb-3">
-                            <label htmlFor="images" className="form-label">Upload Images</label>
+                            <label htmlFor="images" className="form-label">Images</label>
                             <input
                                 type="file"
                                 id="images"
@@ -239,30 +278,41 @@ const PostForm = ({ userId }) => {
                                 onChange={handleImageChange}
                                 accept="image/*"
                                 multiple
+                                required
                             />
                         </div>
 
                         {images.map((imageSrc, index) => (
                             <div key={index} className="mb-3">
-                                <h5>Crop Your Image {index + 1}:</h5>
+                                <h5>Image {index + 1}:</h5>
                                 <img
                                     ref={(el) => (imageRefs.current[index] = el)}
                                     src={imageSrc}
-                                    alt={`To be cropped ${index + 1}`}
-                                    style={{ maxWidth: '100%' }}
+                                    alt={`Preview ${index + 1}`}
+                                    style={{ maxWidth: '100%', marginBottom: '10px' }}
                                 />
                                 <button
                                     type="button"
-                                    className="btn btn-primary mt-2"
+                                    className="btn btn-primary"
                                     onClick={() => handleCrop(index)}
                                 >
-                                    Crop Image {index + 1}
+                                    Crop Image
                                 </button>
                             </div>
                         ))}
 
-                        <button type="submit" className="btn btn-primary btn-block">
-                            Publish Post
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error}
+                            </div>
+                        )}
+
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary w-100"
+                            disabled={!name || !location || !description || images.length === 0}
+                        >
+                            Create Post
                         </button>
                     </form>
                 </div>
