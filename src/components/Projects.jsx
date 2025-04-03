@@ -46,42 +46,42 @@ const Projects = (props) => {
       >
         <div className="carousel-item-wrapper">
           <img
-            src="https://campusnow.wordpress.com/wp-content/uploads/2022/09/dog-pti-1145550-1663296973.jpg"
+            src="https://i.ibb.co/FkbsJnLv/77fe0096-e2c4-4b76-acca-a681c755acb2-66b356ad77c48.jpg"
             alt="Description 1"
             className="img-fluid"
           />
-          <h3 className="mt-2">Title 1</h3>
-          <p>Short description for image 1.</p>
+          <h3 className="mt-2">Street Pet Rescue & First Aid Camp</h3>
+          <p>Rain volunteers to safely rescue road pets and provide basic first aid.</p>
           <button className="btn btn-primary">Learn More</button>
         </div>
         <div className="carousel-item-wrapper">
           <img
-            src="https://media.adoptapet.com/image/upload/c_auto,g_auto,w_358,ar_142:135,dpr_1.5/f_auto,q_auto/1182284751"
+            src="https://i.ibb.co/0RGc0zXs/csm-Taipan-Pacci-Pacca-2015-06-1.png"
             alt="Description 2"
             className="img-fluid"
           />
-          <h3 className="mt-2">Title 2</h3>
-          <p>Short description for image 2.</p>
+          <h3 className="mt-2">Feeding & Rescue Patrol</h3>
+          <p>Organize teams to feed and identify sick/injured strays</p>
           <button className="btn btn-primary">Learn More</button>
         </div>
         <div className="carousel-item-wrapper">
           <img
-            src="https://www.thaiunion.com/files/product/pet/petcare-large.jpg"
+            src="https://i.ibb.co/YFCrdPQB/dogs-for-vaccination.png"
             alt="Description 3"
             className="img-fluid"
           />
-          <h3 className="mt-2">Title 3</h3>
-          <p>Short description for image 3.</p>
+          <h3 className="mt-2">Vet Check-Up & Vaccination Camp</h3>
+          <p>Collaborate with veterinarians to provide free check-ups,and sterilization for street pets.</p>
           <button className="btn btn-primary">Learn More</button>
         </div>
         <div className="carousel-item-wrapper">
           <img
-            src="https://www.thaiunion.com/files/product/pet/petcare-large.jpg"
+            src="https://i.ibb.co/SwDDyYVJ/Milchzeit-2016-02-16-2.png"
             alt="Description 4"
             className="img-fluid"
           />
-          <h3 className="mt-2">Title 4</h3>
-          <p>Short description for image 4.</p>
+          <h3 className="mt-2">"Rescue a Paw" School & College Campaign</h3>
+          <p>Host awareness sessions in schools and colleges to encourage youth involvement.</p>
           <button className="btn btn-primary">Learn More</button>
         </div>
       </Carousel>
