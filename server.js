@@ -21,7 +21,7 @@ const __dirname = dirname(__filename);
 
 // CORS Configuration with more specific settings
 app.use(cors({
-    origin: ['https://roadpets.onrender.com'],
+    origin: ['https://rad-lokum-25c207.netlify.app'],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Origin", "Content-Type", "Accept", "Authorization"],
